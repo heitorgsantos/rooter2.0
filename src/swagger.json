@@ -1,0 +1,413 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API de Integração do Mais Prático com a HubSpot",
+    "description": "Essa API faz a Integração do Mais Prático com a HubSpot. Ao cadastrar as oportunidade de negócio no Mais Prático é enviado para um endpoit que realiza um cadastro na HubSpot. ",
+    "contact": {
+      "email": "heitor.santos@innleaders.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "52.87.156.144:5000/",
+      "description": "API de Produção"
+    }
+  ],
+  "paths": {
+    "/create-deal": {
+      "post": {
+        "summary": "Cadastro da Oportunidade",
+        "description": "Essa rota é responsável por cadastrar a oportunidade de Negócio, ou seja, será cadastrado a empresa, o médico se não houver e o negócio em questão! ",
+        "tags": ["Cotações"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Deal"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/update-deal": {
+      "post": {
+        "summary": "Atualização da Oportunidade",
+        "description": "Essa rota é responsável por atualizar a oportunidade de Negócio, ou seja, o negócio em questão! ",
+        "tags": ["Cotações"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDeal"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/get-deal?stage=${closedwon}": {
+      "get": {
+        "summary": "Negócios retornados por Etapa do Negócio",
+        "description": "",
+        "tags": ["Cotações"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetDealStage"
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/get-deal?dealId=${id}": {
+      "get": {
+        "summary": "Negócio retorno de acordo com o ID enviado",
+        "description": "",
+        "tags": ["Cotações"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetDealId"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/delete-deal": {
+      "delete": {
+        "summary": "Deleta Negócio",
+        "description": "Essa rota é responsável por deletar uma cotação",
+        "tags": ["Cotações"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteDeal"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/create-product": {
+      "post": {
+        "summary": "Criar Produtos",
+        "description": "Essa rota é responsável por criar produtos",
+        "tags": ["Produtos"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProduct"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/update-product": {
+      "patch": {
+        "summary": "Atualização do Produto",
+        "description": "Essa rota é responsável por atualizar os valores do produto",
+        "tags": ["Produtos"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProduct"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/delete-product": {
+      "delete": {
+        "summary": "Delete Produto",
+        "description": "Essa rota é responsável por atualizar os valores do produto",
+        "tags": ["Produtos"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteProduct"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "components": {
+    "schemas": {
+      "Deal": {
+        "type": "object",
+        "properties": {
+          "medico": {
+            "type": "object",
+            "properties": {
+              "nome": {
+                "type": "string"
+              },
+              "sobrenome": {
+                "type": "string"
+              },
+              "crm": {
+                "type": "integer"
+              },
+              "rua": {
+                "type": "string"
+              },
+              "numero": {
+                "type": "integer"
+              },
+              "bairro": {
+                "type": "string"
+              },
+              "cidade": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string"
+              },
+              "telefone": {
+                "type": "string"
+              },
+              "tipo_de_contato": {
+                "type": "string"
+              }
+            }
+          },
+          "produtos": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "nomeDoProduto": {
+                  "type": "string"
+                },
+                "sku_mais_pratico": {
+                  "type": "string"
+                },
+                "valor_unitario": {
+                  "type": "integer"
+                },
+                "price": {
+                  "type": "integer"
+                },
+                "quantidade": {
+                  "type": "integer"
+                },
+                "registro_anvisa": {
+                  "type": "string"
+                },
+                "descricao": {
+                  "type": "string"
+                },
+                "lote": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "empresa": {
+            "type": "object",
+            "properties": {
+              "cnpj": {
+                "type": "string"
+              },
+              "razao_social": {
+                "type": "string"
+              },
+              "classificacao_da_empresa": {
+                "type": "string"
+              }
+            }
+          },
+          "negocio": {
+            "type": "object",
+            "properties": {
+              "instrumentador": {
+                "type": "string"
+              },
+              "paciente": {
+                "type": "string"
+              },
+              "procedimento_cirurgico": {
+                "type": "string"
+              },
+              "data_hora_cirurgia": {
+                "type": "string"
+              },
+              "convenio": {
+                "type": "string"
+              },
+              "id_da_cotacao": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "UpdateDeal": {
+        "type": "object",
+        "properties": {
+          "instrumentador": {
+            "type": "string"
+          },
+          "paciente": {
+            "type": "string"
+          },
+          "data_hora_cirurgia": {
+            "type": "string"
+          },
+          "convenio": {
+            "type": "string"
+          },
+          "id_da_cotacao": {
+            "type": "string"
+          },
+          "produtos": {
+            "type": "array",
+            "items": {
+              "type": "object",
+
+              "properties": {
+                "nomeDoProduto": {
+                  "type": "string"
+                },
+                "valor_unitario": {
+                  "type": "string"
+                },
+                "price": {
+                  "type": "integer"
+                },
+                "lote": {
+                  "type": "string"
+                },
+                "quantidade": {
+                  "type": "integer"
+                },
+                "sku_mais_pratico": {
+                  "type": "string"
+                },
+                "descricao": {
+                  "type": "string"
+                },
+                "registro_anvisa": {
+                  "type": "string"
+                },
+                "fabricante": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "DeleteDeal": {
+        "type": "object",
+        "properties": {
+          "id_da_cotacao": {
+            "type": "string"
+          }
+        }
+      },
+
+      "GetDealStage": {},
+
+      "GetDealId": {},
+
+      "CreateProduct": {
+        "type": "object",
+        "properties": {
+          "produtos": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "nomeDoProduto": {
+                  "type": "string"
+                },
+                "sku_mais_pratico": {
+                  "type": "string"
+                },
+                "valor_unitario": {
+                  "type": "integer"
+                },
+                "price": {
+                  "type": "integer"
+                },
+                "quantidade": {
+                  "type": "integer"
+                },
+                "registro_anvisa": {
+                  "type": "string"
+                },
+                "descricao": {
+                  "type": "string"
+                },
+                "lote": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "UpdateProduct": {
+        "type": "object",
+        "properties": {
+          "produtos": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "nomeDoProduto": {
+                  "type": "string"
+                },
+                "sku_mais_pratico": {
+                  "type": "string"
+                },
+                "valor_unitario": {
+                  "type": "integer"
+                },
+                "price": {
+                  "type": "integer"
+                },
+                "quantidade": {
+                  "type": "integer"
+                },
+                "registro_anvisa": {
+                  "type": "string"
+                },
+                "descricao": {
+                  "type": "string"
+                },
+                "lote": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+
+      "DeleteProduct": {
+        "type": "object",
+        "properties": {
+          "sku_mais_pratico": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
