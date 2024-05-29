@@ -9,7 +9,7 @@
   },
   "servers": [
     {
-      "url": "52.87.156.144:5000/",
+      "url": "https://rooter2-0.onrender.com/",
       "description": "API de Produção"
     }
   ],
@@ -401,10 +401,17 @@
       },
 
       "DeleteProduct": {
-        "type": "object",
         "properties": {
-          "sku_mais_pratico": {
-            "type": "string"
+          "produtos": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "sku_mais_pratico": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       }
