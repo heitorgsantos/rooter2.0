@@ -45,7 +45,7 @@ const requestModelCreateDeal = async (body) => {
       convenio,
       id_da_cotacao,
       tipo_de_cotacao,
-      procedimento_cirurgico
+      procedimento_cirurgico,
     } = negocio;
     const { newDate, horaDaCirurgia } = dateFormat(data_hora_cirurgia);
     console.log(newDate, horaDaCirurgia);
@@ -86,7 +86,7 @@ const requestModelCreateDeal = async (body) => {
         pipeline: "default",
         dealstage: "appointmentscheduled",
         tipo_de_cotacao: tipo_de_cotacao,
-        prodecd: procedimento_cirurgico
+        prodecd: procedimento_cirurgico,
       },
     };
 
@@ -219,17 +219,18 @@ const requestModelCreateDeal = async (body) => {
           ({ properties }) => properties.sku_mais_pratico === sku_mais_pratico
         );
         let productId;
-        existingProducts.forEach(({ properties }) =>
-          properties.sku_mais_pratico === sku_mais_pratico
-            ? (productId = properties.sku_mais_pratico)
-            : productId
-        );
+        existingProducts.forEach(({ properties }) => {
+          console.log("PROPERTIES",properties,"SKU+PRATICO", sku_mais_pratico)
+          Number(properties.sku_mais_pratico) === Number(sku_mais_pratico)
+            ? (productId = properties.hs_object_id)
+            : productId;
+        });
         if (allProductsAreEquals) {
           const dataLineItem = {
             properties: {
               sku_mais_pratico,
-              quantidade,
-              price,
+              quantity:quantidade,
+              price: price,
               name: nomeDoProduto,
               hs_product_id: productId,
             },
@@ -248,13 +249,15 @@ const requestModelCreateDeal = async (body) => {
             ],
           };
           productsAssociateds.push(dataLineItem);
-        } 
+        }
       }
     }
     console.log("Produtos para serem associados", productsAssociateds);
-    productsAssociateds.forEach(async (properties) => {
-      await createLineItem(properties);
-    });
+    Promise.all(
+      productsAssociateds.map(async (properties) => {
+        await createLineItem(properties);
+      })
+    );
     return {
       status: 201,
       message: "Cotação cadastrada com sucesso!",

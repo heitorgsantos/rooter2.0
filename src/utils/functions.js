@@ -88,7 +88,10 @@ const deletePropertiesHS = async (url) => {
   try {
     const responseDelete = await serverAxiosHS
       .delete(url)
-      .then((response) => response.data)
+      .then((response) => {
+        console.log("Deletado com sucesso!");
+        return response.data;
+      })
       .catch((error) => error);
     return responseDelete;
   } catch (error) {
