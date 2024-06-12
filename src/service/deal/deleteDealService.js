@@ -10,6 +10,7 @@ const deleteDealService = async (negocio) => {
     if (responseDeleteDeal) {
       return "Negócio Deletado com sucesso!";
     }
+    return "Negócio Deletado com sucesso!";
   } catch (error) {
     return { status: error.response.status, message: error.message };
   }
