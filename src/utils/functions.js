@@ -62,7 +62,7 @@ const getObjectsProperties = async (url) => {
       return response.data.options;
     })
     .catch((error) => {
-      console.log("Error Properties: ", error.response);
+      // console.log("Error Properties: ", error.response);
       return error.response.statusText;
     });
   return fetchProperties;
@@ -75,10 +75,10 @@ const patchObjectsProperties = async (url, parameters) => {
       return response.data;
     })
     .catch((error) => {
-      console.log(
-        "Error ao CRIAR OPÇÕES DE PROPRIEDADES: ",
-        error.response.data
-      );
+      // console.log(
+      //   "Error ao CRIAR OPÇÕES DE PROPRIEDADES: ",
+      //   error.response.data
+      // );
       return error.response.statusText;
     });
   return fetchProperties;

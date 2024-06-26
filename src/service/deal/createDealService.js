@@ -16,7 +16,7 @@ const requestModelCreateDeal = async (body) => {
   const existingCompanies = await searchCompanie(empresa);
   const existingContact = await searchContact(medico);
   const existingProducts = await searchProducts(produtos);
-  console.log("Contatos: ", existingContact);
+  // console.log("Contatos: ", existingContact);
 
   const productsAssociateds = [];
 
@@ -30,12 +30,12 @@ const requestModelCreateDeal = async (body) => {
       ? existingContact[0].id
       : await createContact(medico);
 
-  console.log(
-    "ID da Empresa: ",
-    responseIdCompanie,
-    "ID do Médico: ",
-    responseIdContact
-  );
+  // console.log(
+  //   "ID da Empresa: ",
+  //   responseIdCompanie,
+  //   "ID do Médico: ",
+  //   responseIdContact
+  // );
 
   if (!respondeIdQuotes) {
     const {
@@ -48,7 +48,7 @@ const requestModelCreateDeal = async (body) => {
       procedimento_cirurgico,
     } = negocio;
     const { newDate, horaDaCirurgia } = dateFormat(data_hora_cirurgia);
-    console.log(newDate, horaDaCirurgia);
+    // console.log(newDate, horaDaCirurgia);
 
     const data = {
       associations: [
@@ -170,7 +170,7 @@ const requestModelCreateDeal = async (body) => {
             };
             productsAssociateds.push(dataAssociates);
           } else {
-            console.log("Produto já cadastrado", product);
+            // console.log("Produto já cadastrado", product);
             const { sku_mais_pratico, quantidade, price, nomeDoProduto } =
               product;
             let productId;
@@ -215,12 +215,13 @@ const requestModelCreateDeal = async (body) => {
         price,
         nomeDoProduto,
       } of produtos) {
+        console.log("Quantidade");
         const allProductsAreEquals = existingProducts.some(
           ({ properties }) => properties.sku_mais_pratico === sku_mais_pratico
         );
         let productId;
         existingProducts.forEach(({ properties }) => {
-          console.log("PROPERTIES",properties,"SKU+PRATICO", sku_mais_pratico)
+          // console.log("PROPERTIES",properties,"SKU+PRATICO", sku_mais_pratico)
           Number(properties.sku_mais_pratico) === Number(sku_mais_pratico)
             ? (productId = properties.hs_object_id)
             : productId;
@@ -229,7 +230,7 @@ const requestModelCreateDeal = async (body) => {
           const dataLineItem = {
             properties: {
               sku_mais_pratico,
-              quantity:quantidade,
+              quantity: quantidade,
               price: price,
               name: nomeDoProduto,
               hs_product_id: productId,
@@ -252,7 +253,7 @@ const requestModelCreateDeal = async (body) => {
         }
       }
     }
-    console.log("Produtos para serem associados", productsAssociateds);
+    // console.log("Produtos para serem associados", productsAssociateds);
     Promise.all(
       productsAssociateds.map(async (properties) => {
         await createLineItem(properties);

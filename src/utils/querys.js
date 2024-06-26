@@ -13,7 +13,7 @@ const queryProducts = (products) => {
       {
         filters: [
           {
-            propertyName: "sku_mais_pratico",
+            propertyName: "hs_sku",
             values: skuValues,
             operator: "IN",
           },
