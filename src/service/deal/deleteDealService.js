@@ -4,16 +4,25 @@ const { searchDeal } = require("../../model/deal/searchDealModel");
 const deleteDealService = async (negocio) => {
   try {
     const responseSearchDeal = await searchDeal(negocio);
-    console.log("Deal",responseSearchDeal);
-    if(!responseSearchDeal) {
-      return "Negócio não encontrado, verifique se está passando o ID corretamente!"
+    console.log("Deal", responseSearchDeal);
+    if (!responseSearchDeal) {
+      return "Negócio não encontrado, verifique se está passando o ID corretamente!";
     }
 
     const responseDeleteDeal = await deleteDeal(responseSearchDeal[0].id);
+    console.log("Response, delete Deal")
     if (responseDeleteDeal) {
-      return "Negócio Deletado com sucesso!";
+      return {
+        message: "Negócio Deletado com sucesso!",
+        dealName: responseSearchDeal[0].properties.dealname,
+        dealId: responseSearchDeal[0].id,
+      };
     }
-    return "Negócio Deletado com sucesso!";
+    return {
+      message: "Negócio Deletado com sucesso!",
+      dealName: responseSearchDeal[0].properties.dealname,
+      dealId: responseSearchDeal[0].id,
+    };
   } catch (error) {
     return { status: error.status, message: error.message };
   }
