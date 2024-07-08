@@ -3,12 +3,12 @@ const { searchProducts } = require("../../model/product/searchproductModel");
 
 const deleteProductService = async (products) => {
   const responseSearchProduct = await searchProducts(products);
-
+console.log("Entrou no delete", products)
   let idProducts = [];
   for (const product of products) {
     idProducts = responseSearchProduct.map((item) => {
       console.log(item);
-      if (product.sku_mais_pratico === item.properties.sku_mais_pratico) {
+      if (product.sku_mais_pratico === item.properties.hs_sku) {
         return item.id;
       }
     });

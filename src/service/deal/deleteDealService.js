@@ -4,7 +4,10 @@ const { searchDeal } = require("../../model/deal/searchDealModel");
 const deleteDealService = async (negocio) => {
   try {
     const responseSearchDeal = await searchDeal(negocio);
-    console.log(responseSearchDeal);
+    console.log("Deal",responseSearchDeal);
+    if(!responseSearchDeal) {
+      return "Negócio não encontrado, verifique se está passando o ID corretamente!"
+    }
 
     const responseDeleteDeal = await deleteDeal(responseSearchDeal[0].id);
     if (responseDeleteDeal) {
@@ -12,7 +15,7 @@ const deleteDealService = async (negocio) => {
     }
     return "Negócio Deletado com sucesso!";
   } catch (error) {
-    return { status: error.response.status, message: error.message };
+    return { status: error.status, message: error.message };
   }
 };
 module.exports = { deleteDealService };

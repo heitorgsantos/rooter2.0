@@ -8,6 +8,7 @@ const queryProducts = (products) => {
       "price",
       "quantity",
       "sku_mais_pratico",
+      "hs_sku"
     ],
     filterGroups: [
       {
@@ -40,7 +41,7 @@ const queryLineItems = (products) => {
       {
         filters: [
           {
-            propertyName: "id",
+            propertyName: "hs_sku",
             values: idValues,
             operator: "IN",
           },

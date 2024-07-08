@@ -47,7 +47,7 @@ const updateDealService = async (body) => {
 
       console.log("Items de linha", responseLineItems);
 
-      if (responseLineItems.length !== 0) {
+      if (responseLineItems.length !== 0 && responseLineItems) {
         await Promise.all(
           responseLineItems.map(async (item) => {
             console.log(item.id);
@@ -61,8 +61,11 @@ const updateDealService = async (body) => {
       const productsAssociateds = [];
       const existingProducts = await searchProducts(produtos);
 
-      if (existingProducts.length !== produtos.length) {
-        if (existingProducts.length === 0) {
+      console.log("Existe Produtos", existingProducts);
+
+      if (existingProducts.length !== produtos.length || !existingProducts) {
+        if (existingProducts.length === 0 || !existingProducts) {
+          console.log("Existe Produtos", existingProducts);
           for (const product of produtos) {
             const {
               properties: {
@@ -102,7 +105,7 @@ const updateDealService = async (body) => {
             if (
               existingProducts.every(
                 (item) =>
-                  Number(item.properties.sku_mais_pratico) !==
+                  Number(item.properties.hs_sku) !==
                   Number(product.sku_mais_pratico)
               )
             ) {
@@ -145,8 +148,7 @@ const updateDealService = async (body) => {
               let productId;
               existingProducts.forEach((item) => {
                 if (
-                  Number(item.properties.sku_mais_pratico) ===
-                  Number(sku_mais_pratico)
+                  Number(item.properties.hs_sku) === Number(sku_mais_pratico)
                 ) {
                   productId = item.properties.sku_mais_pratico;
                 }
@@ -185,7 +187,7 @@ const updateDealService = async (body) => {
           nomeDoProduto,
         } of produtos) {
           const allProductsAreEquals = existingProducts.some(
-            ({ properties }) => properties.sku_mais_pratico === sku_mais_pratico
+            ({ properties }) => properties.hs_sku === sku_mais_pratico
           );
           let productId;
           existingProducts.forEach(({ properties }) => {
@@ -232,8 +234,12 @@ const updateDealService = async (body) => {
           await createLineItem(properties);
         })
       );
-
-      return { message: "Negócio Atualizado com Sucesso!" };
+      console.log("Update Quote", responseIdQuote);
+      return {
+        message: "Negócio Atualizado com Sucesso!",
+        dealName: responseIdQuote[0].properties.dealname,
+        dealId: responseIdQuote[0].id,
+      };
     }
   } catch (error) {
     return error.message;

@@ -6,7 +6,8 @@ const deleteProduct = async (id) => {
       const responseDeleteProduct = await deletePropertiesHS(url);
       return responseDeleteProduct;
     } catch (error) {
-      return { status: error.resonse.status, message: error.message };
+      console.log("Error delete", error.response)
+      return { status: error.response.status, message: error.message };
     }
   };
   

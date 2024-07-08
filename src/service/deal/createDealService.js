@@ -259,10 +259,11 @@ const requestModelCreateDeal = async (body) => {
         await createLineItem(properties);
       })
     );
+    console.log("Cotação criada",responseCreateQuote)
     return {
       status: 201,
       message: "Cotação cadastrada com sucesso!",
-      idDaCocata: responseCreateQuote.id,
+      idDaCotacaoHS: responseCreateQuote.id,
     };
   } else {
     return {

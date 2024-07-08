@@ -274,6 +274,7 @@
           "id_da_cotacao": {
             "type": "string"
           },
+
           "produtos": {
             "type": "array",
             "items": {
