@@ -16,6 +16,9 @@ const updateDealService = async (body) => {
   const { produtos, negocios } = body;
 
   const responseIdQuote = await searchDeal(negocios);
+  if(responseIdQuote.length === 0 ){
+    return `Não encontramos o negócio com o ID: ${negocios.id_da_cotacao}`
+  }
 
   try {
     if (responseIdQuote.length > 0) {

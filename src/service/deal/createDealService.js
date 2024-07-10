@@ -263,7 +263,7 @@ const requestModelCreateDeal = async (body) => {
     return {
       status: 201,
       message: "Cotação cadastrada com sucesso!",
-      idDaCotacaoHS: responseCreateQuote.id,
+      dealId: responseCreateQuote.id,
     };
   } else {
     return {
