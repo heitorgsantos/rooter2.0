@@ -13,16 +13,16 @@ const { deletePropertiesHS } = require("../../utils/functions");
 const { searchProducts } = require("../../model/product/searchproductModel");
 
 const updateDealService = async (body) => {
-  const { produtos, negocios } = body;
+  const { produtos } = body;
 
-  console.log("Update 01/08/2024: ",negocios)
+  console.log("Update 01/08/2024: ",body)
 
-  const responseIdQuote = await searchDeal(negocios);
+  const responseIdQuote = await searchDeal(body);
 
 
   console.log("Response ID Quote", responseIdQuote)
   if(!responseIdQuote){
-    return `Não encontramos o negócio com o ID: ${negocios.id_da_cotacao}`
+    return `Não encontramos o negócio com o ID: ${body.id_da_cotacao}`
   }
 
   try {
