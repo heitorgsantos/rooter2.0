@@ -88,6 +88,7 @@ const queryCompany = (company) => {
   return query;
 };
 
+
 const queryDeal = (deal) => {
   const { id_da_cotacao } = deal;
   const query = {
