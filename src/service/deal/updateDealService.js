@@ -15,6 +15,8 @@ const { searchProducts } = require("../../model/product/searchproductModel");
 const updateDealService = async (body) => {
   const { produtos, negocios } = body;
 
+  console.log("Update 01/08/2024: ",negocios)
+
   const responseIdQuote = await searchDeal(negocios);
 
 
