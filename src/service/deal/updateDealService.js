@@ -250,6 +250,8 @@ const updateDealService = async (body) => {
   } catch (error) {
     return error.message;
   }
+  
+
   // if (produtos.length > 0) {
   //   if (responseLineItems.length === produtos.length) {
   //     for (const { sku_mais_pratico, price, quantidade } of produtos) {

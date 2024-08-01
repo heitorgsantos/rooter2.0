@@ -12,6 +12,8 @@ const { dateFormat } = require("../../utils/validations");
 const requestModelCreateDeal = async (body) => {
   const { negocio, empresa, medico, produtos } = body;
 
+  console.log("Payload de hoje 01/08/2024", body);
+
   const respondeIdQuotes = await searchDeal(negocio);
   const existingCompanies = await searchCompanie(empresa);
   const existingContact = await searchContact(medico);
