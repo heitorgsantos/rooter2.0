@@ -37,9 +37,9 @@ const updateDealService = async (body) => {
         responseLineItemAssociatedsDeals.results
       );
       /**Verificar se a alteração de produtos é igual a quantidade de produto no body */
-      if (negocios) {
+      if (body) {
         const { instrumentador, paciente, data_hora_cirurgia, dealstage } =
-          negocios;
+          body;
         const { newDate, horaDaCirurgia } = dateFormat(data_hora_cirurgia);
         const data = {
           properties: {
