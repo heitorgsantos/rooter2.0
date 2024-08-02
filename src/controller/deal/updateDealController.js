@@ -2,7 +2,6 @@ const { updateDealService } = require("../../service/deal/updateDealService");
 
 const updateDealController = async (req, res) => {
     try {
-        console.log("Update Body", req.body)
         const responseUpdateDeal = await updateDealService(req.body);
         return res.status(201).json(responseUpdateDeal);
     } catch (error) {

@@ -29,9 +29,12 @@ const updateDealService = async (body) => {
         id,
         "line_items"
       );
+
       const responseLineItems = await searchLineItems(
         responseLineItemAssociatedsDeals.results
       );
+
+      console.log("Response Line Itens", responseLineItems)
       /**Verificar se a alteração de produtos é igual a quantidade de produto no body */
       if (body) {
         const { instrumentador, paciente, data_hora_cirurgia, dealstage } =

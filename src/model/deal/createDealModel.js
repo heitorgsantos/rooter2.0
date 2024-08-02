@@ -10,4 +10,4 @@ const createDeal = async (deal) => {
   }
 };
 
-module.exports = createDeal;
+module.exports = {createDeal};

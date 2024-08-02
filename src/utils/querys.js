@@ -1,6 +1,7 @@
 const queryProducts = (products) => {
   const skuValues = [];
   products.forEach(({ sku_mais_pratico }) => skuValues.push(sku_mais_pratico));
+  console.log("QQuery Products", skuValues)
   const query = {
     properties: [
       "hs_object_id",
