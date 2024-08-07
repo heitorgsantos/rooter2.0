@@ -183,7 +183,8 @@
               "tipo_de_contato": {
                 "type": "string"
               }
-            }
+            },
+            "required": ["crm"]
           },
           "produtos": {
             "type": "array",
@@ -229,7 +230,9 @@
               "classificacao_da_empresa": {
                 "type": "string"
               }
-            }
+            },
+
+            "required": ["cnpj"]
           },
           "negocio": {
             "type": "object",
@@ -266,11 +269,12 @@
               "email": {
                 "type": "string"
               }
-            }
+            },
+            "required": ["email"]
           }
-        },
-        "required": ["email", "crm", "cnpj"]
+        }
       },
+
       "UpdateDeal": {
         "type": "object",
         "properties": {
@@ -328,6 +332,7 @@
           }
         }
       },
+
       "DeleteDeal": {
         "type": "object",
         "properties": {
