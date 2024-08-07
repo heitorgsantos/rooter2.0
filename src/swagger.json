@@ -268,7 +268,8 @@
               }
             }
           }
-        }
+        },
+        "required": ["email", "crm", "cnpj"]
       },
       "UpdateDeal": {
         "type": "object",
