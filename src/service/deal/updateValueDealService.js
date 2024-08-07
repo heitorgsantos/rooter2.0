@@ -15,12 +15,10 @@ const updateValueDealService = async (body) => {
     const responseValueLineItem = await getObjects(
       `crm/v3/objects/line_items/${item.id}`
     );
-    console.log(responseValueLineItem)
     totalValue = totalValue + (Number(responseValueLineItem.properties.amount) * Number(responseValueLineItem.properties.quantity));
   }
 
   if (totalValue > 0 && objectId) {
-    console.log(totalValue);
 
     const dealProperties = {
       properties: {
