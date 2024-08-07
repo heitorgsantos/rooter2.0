@@ -3,6 +3,7 @@ const { updateValueDealService } = require("../../service/deal/updateValueDealSe
 
 const updateValueDealController = async (req, res) => {
   try {
+    console.log(req.body)
     const responseUpdateValueDealService = await updateValueDealService(req.body);
     return res.status(201).json(responseUpdateValueDealService);
   } catch (error) {
