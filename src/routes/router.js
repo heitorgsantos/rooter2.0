@@ -29,7 +29,7 @@ const router = express.Router();
 
 router.post("/create-deal", createDealController);
 router.post("/update-deal", updateDealController);
-router.get("/update-value", updateValueDealController);
+router.post("/update-value", updateValueDealController);
 router.delete("/delete-deal", deleteDealController);
 router.get("/get-deal", getDealController);
 
