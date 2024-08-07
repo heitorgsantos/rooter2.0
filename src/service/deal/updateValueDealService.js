@@ -2,7 +2,7 @@ const { searchDealAssociates } = require("../../model/deal/searchDealModel");
 const { getObjects, patchPropertiesHS } = require("../../utils/functions");
 
 const updateValueDealService = async (body) => {
-  const { objectId } = body;
+  const { objectId } = body[0];
 
   const responseLineItemAssociatedsDeals = await searchDealAssociates(
     objectId,
