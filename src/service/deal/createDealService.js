@@ -7,15 +7,20 @@ const { searchDeal } = require("../../model/deal/searchDealModel");
 const { createLineItem } = require("../../model/lineItem/createLineItem");
 const { createProduct } = require("../../model/product/createProductModel");
 const { searchProducts } = require("../../model/product/searchproductModel");
+const {
+  analyseProdutcts,
+  formatCreateLineItems,
+} = require("../../utils/functionProducts");
 const { dateFormat } = require("../../utils/validations");
 
 const requestModelCreateDeal = async (body) => {
-  const { negocio, empresa, medico, produtos } = body;
+  const { negocio, empresa, medico, produtos, contato } = body;
 
   const respondeIdQuotes = await searchDeal(negocio);
   const existingCompanies = await searchCompanie(empresa);
-  const existingContact = await searchContact(medico);
+  const existingContact = await searchContact(medico, "medico");
   const existingProducts = await searchProducts(produtos);
+  const contactOperator = await searchContact(contato, "operador");
 
   const productsAssociateds = [];
 
@@ -27,7 +32,16 @@ const requestModelCreateDeal = async (body) => {
   const responseIdContact =
     existingContact.length > 0
       ? existingContact[0].id
-      : await createContact(medico);
+      : await createContact(medico, "medico");
+
+
+      const responseIdOperator =
+      contactOperator.length > 0
+        ? contactOperator[0].id
+        : await createContact(contato, "operador");
+
+        console.log(contactOperator)
+
 
   if (!respondeIdQuotes) {
     const {
@@ -40,60 +54,6 @@ const requestModelCreateDeal = async (body) => {
       procedimento_cirurgico,
     } = negocio;
     const { newDate, horaDaCirurgia } = dateFormat(data_hora_cirurgia);
-
-    const analyseProdutcts = async (productsInHs, productsPayload) => {
-      if (productsInHs.length !== productsPayload.length) {
-        // console.log("Não éo mesmo tamnaho");
-        let productsToCreate = [];
-        productsInHs.forEach((inHs) => {
-          productsPayload.forEach((payload) => {
-            if (inHs.properties.hs_sku !== payload.sku_mais_pratico) {
-              productsToCreate.push(payload);
-            } else {
-            
-                inHs.properties.quantity = payload.quantidade;
-             
-            }
-          });
-        });
-        // console.log("Produtos a ser criados", productsToCreate);
-        for (const product of productsToCreate) {
-          const newProducts = await createProduct(product);
-          existingProducts.push(newProducts);
-        }
-        // console.log("Produto criados", existingProducts);
-      }
-    };
-
-    const formatCreateLineItems = (allProducts, dealId) => {
-      // console.log(allProducts)
-      const { quantity, quantidade,price, hs_object_id, name, sku_mais_pratico } =
-        allProducts.properties;
-
-      const dataAssociates = {
-        properties: {
-          quantity: quantity ? quantity : quantidade,
-          price,
-          hs_product_id: hs_object_id,
-          name,
-          sku_mais_pratico,
-        },
-        associations: [
-          {
-            to: {
-              id: dealId.id,
-            },
-            types: [
-              {
-                associationCategory: "HUBSPOT_DEFINED",
-                associationTypeId: 20,
-              },
-            ],
-          },
-        ],
-      };
-      return dataAssociates;
-    };
 
     const data = {
       associations: [
@@ -119,6 +79,17 @@ const requestModelCreateDeal = async (body) => {
             id: responseIdContact,
           },
         },
+        {
+          types: [
+            {
+              associationCategory: "USER_DEFINED",
+              associationTypeId: 36,
+            },
+          ],
+          to: {
+            id: responseIdOperator,
+          },
+        },
       ],
       properties: {
         dealname: paciente,
@@ -137,8 +108,14 @@ const requestModelCreateDeal = async (body) => {
     const responseCreateQuote = await createDeal(data);
 
     await analyseProdutcts(existingProducts, produtos);
+    existingProducts.forEach((inHub) => {
+      produtos.forEach((payload) => {
+        if (inHub.properties.hs_sku === payload.sku_mais_pratico) {
+          inHub.properties.price = payload.price;
+        }
+      });
+    });
     console.log("Produtos cadastrados: ", existingProducts);
-
 
     const lineItems = existingProducts.map((items) =>
       formatCreateLineItems(items, responseCreateQuote)

@@ -21,11 +21,15 @@ const {
 const {
   searchProductController,
 } = require("../controller/product/searchProductController");
+const {
+  updateValueDealController,
+} = require("../controller/deal/updateValueDealController");
 
 const router = express.Router();
 
 router.post("/create-deal", createDealController);
 router.post("/update-deal", updateDealController);
+router.post("/update-value", updateValueDealController);
 router.delete("/delete-deal", deleteDealController);
 router.get("/get-deal", getDealController);
 

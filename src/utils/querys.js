@@ -71,6 +71,25 @@ const queryDoctor = (doctor) => {
   return query;
 };
 
+
+const queryEmail = (contact) => {
+  const query = {
+    properties: ["hs_object_id"],
+    filterGroups: [
+      {
+        filters: [
+          {
+            propertyName: "email",
+            value: contact.email,
+            operator: "EQ",
+          },
+        ],
+      },
+    ],
+  };
+  return query;
+};
+
 const queryCompany = (company) => {
   const query = {
     properties: ["hs_object_id"],
@@ -177,5 +196,6 @@ module.exports = {
   queryUpdateProduct,
   queryLineItems,
   queryDealStage,
-  queryDealId
+  queryDealId,
+  queryEmail
 };

@@ -68,6 +68,19 @@ const getObjectsProperties = async (url) => {
   return fetchProperties;
 };
 
+
+const getObjects = async (url) => {
+  const fetchProperties = await serverAxiosHS
+    .get(url)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      // console.log("Error Properties: ", error.response);
+      return error.response.statusText;
+    });
+  return fetchProperties;
+};
 const patchObjectsProperties = async (url, parameters) => {
   const fetchProperties = await serverAxiosHS
     .patch(url, parameters)
@@ -145,4 +158,5 @@ module.exports = {
   patchObjectsProperties,
   consultaCnpj,
   deletePropertiesHS,
+  getObjects
 };

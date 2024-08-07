@@ -253,6 +253,20 @@
                 "type": "string"
               }
             }
+          },
+          "contato": {
+            "type": "object",
+            "properties": {
+              "nome": {
+                "type": "string"
+              },
+              "sobrenome": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string"
+              }
+            }
           }
         }
       },
