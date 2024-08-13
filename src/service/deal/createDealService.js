@@ -50,6 +50,7 @@ const requestModelCreateDeal = async (body) => {
       data_hora_cirurgia,
       convenio,
       id_da_cotacao,
+      id_ext,
       tipo_de_cotacao,
       procedimento_cirurgico,
     } = negocio;
@@ -97,7 +98,8 @@ const requestModelCreateDeal = async (body) => {
         nome_do_paciente: paciente,
         horario_da_cirurgia: horaDaCirurgia,
         data_da_cirurgia: newDate,
-        id_da_cotacao: id_da_cotacao,
+        id_da_cotacao: id_ext,
+        id_: id_da_cotacao,
         // convenio: convenio,
         pipeline: "default",
         dealstage: "appointmentscheduled",

@@ -254,6 +254,9 @@
               },
               "id_da_cotacao": {
                 "type": "string"
+              },
+              "id_ext": {
+                "type": "string"
               }
             }
           },
