@@ -113,7 +113,7 @@ const queryDeal = (deal) => {
   const { id_da_cotacao } = deal;
   const query = {
     properties: [
-      "id_da_cotacao",
+      "id_",
       "dealname",
       "paciente",
       "instrumentador",
@@ -121,7 +121,7 @@ const queryDeal = (deal) => {
     ],
     filters: [
       {
-        propertyName: "id_da_cotacao",
+        propertyName: "id_",
         value: id_da_cotacao,
         operator: "EQ",
       },
@@ -158,10 +158,11 @@ const queryDealId = (id_da_cotacao) => {
       "paciente",
       "instrumentador",
       "pipeline",
+      "id_"
     ],
     filters: [
       {
-        propertyName: "id_da_cotacao",
+        propertyName: "id_",
         value: id_da_cotacao,
         operator: "EQ",
       },

@@ -14,13 +14,13 @@ const {
 const { dateFormat } = require("../../utils/validations");
 
 const requestModelCreateDeal = async (body) => {
-  const { negocio, empresa, medico, produtos, contato } = body;
+  const { negocio, empresa, medico, produtos } = body;
 
   const respondeIdQuotes = await searchDeal(negocio);
   const existingCompanies = await searchCompanie(empresa);
   const existingContact = await searchContact(medico, "medico");
   const existingProducts = await searchProducts(produtos);
-  const contactOperator = await searchContact(contato, "operador");
+  // const contactOperator = await searchContact(contato, "operador");
 
   const productsAssociateds = [];
 
@@ -35,12 +35,12 @@ const requestModelCreateDeal = async (body) => {
       : await createContact(medico, "medico");
 
 
-      const responseIdOperator =
-      contactOperator.length > 0
-        ? contactOperator[0].id
-        : await createContact(contato, "operador");
+      // const responseIdOperator =
+      // contactOperator.length > 0
+      //   ? contactOperator[0].id
+      //   : await createContact(contato, "operador");
 
-        console.log(contactOperator)
+      //   console.log(contactOperator)
 
 
   if (!respondeIdQuotes) {
@@ -80,17 +80,17 @@ const requestModelCreateDeal = async (body) => {
             id: responseIdContact,
           },
         },
-        {
-          types: [
-            {
-              associationCategory: "USER_DEFINED",
-              associationTypeId: 36,
-            },
-          ],
-          to: {
-            id: responseIdOperator,
-          },
-        },
+        // {
+        //   types: [
+        //     {
+        //       associationCategory: "USER_DEFINED",
+        //       associationTypeId: 36,
+        //     },
+        //   ],
+        //   to: {
+        //     id: responseIdOperator,
+        //   },
+        // },
       ],
       properties: {
         dealname: paciente,
