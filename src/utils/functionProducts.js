@@ -2,7 +2,7 @@ const { createProduct } = require("../model/product/createProductModel");
 
 const analyseProdutcts = async (productsInHs, productsPayload) => {
   if (productsInHs.length !== productsPayload.length) {
-    // console.log("Não éo mesmo tamnaho");
+    console.log("Não éo mesmo tamnaho");
     let productsToCreate = [];
     productsInHs.forEach((inHs) => {
       productsPayload.forEach((payload) => {
@@ -10,6 +10,7 @@ const analyseProdutcts = async (productsInHs, productsPayload) => {
           productsToCreate.push(payload);
         } else {
           inHs.properties.quantity = payload.quantidade;
+
         }
       });
     });

@@ -20,7 +20,7 @@ const requestModelCreateDeal = async (body) => {
   const existingCompanies = await searchCompanie(empresa);
   const existingContact = await searchContact(medico, "medico");
   const existingProducts = await searchProducts(produtos);
-  // const contactOperator = await searchContact(contato, "operador");
+  console.log("Produtos HS: ", existingProducts);
 
   const productsAssociateds = [];
 
@@ -33,15 +33,6 @@ const requestModelCreateDeal = async (body) => {
     existingContact.length > 0
       ? existingContact[0].id
       : await createContact(medico, "medico");
-
-
-      // const responseIdOperator =
-      // contactOperator.length > 0
-      //   ? contactOperator[0].id
-      //   : await createContact(contato, "operador");
-
-      //   console.log(contactOperator)
-
 
   if (!respondeIdQuotes) {
     const {
@@ -80,17 +71,6 @@ const requestModelCreateDeal = async (body) => {
             id: responseIdContact,
           },
         },
-        // {
-        //   types: [
-        //     {
-        //       associationCategory: "USER_DEFINED",
-        //       associationTypeId: 36,
-        //     },
-        //   ],
-        //   to: {
-        //     id: responseIdOperator,
-        //   },
-        // },
       ],
       properties: {
         dealname: paciente,
@@ -107,8 +87,7 @@ const requestModelCreateDeal = async (body) => {
         prodecd: procedimento_cirurgico,
       },
     };
-    const responseCreateQuote = await createDeal(data);
-
+   
     await analyseProdutcts(existingProducts, produtos);
     existingProducts.forEach((inHub) => {
       produtos.forEach((payload) => {
@@ -119,11 +98,16 @@ const requestModelCreateDeal = async (body) => {
     });
     console.log("Produtos cadastrados: ", existingProducts);
 
-    const lineItems = existingProducts.map((items) =>
-      formatCreateLineItems(items, responseCreateQuote)
-    );
+    let lineItems;
+    let responseCreateQuote;
+    if (existingProducts.length > 0) {
+      responseCreateQuote = await createDeal(data);
+      lineItems = existingProducts.map((items) =>
+        formatCreateLineItems(items, responseCreateQuote)
+      );
+    }
 
-    console.log("Itens de Linhas: ", lineItems[0].associations);
+    // console.log("Itens de Linhas: ", lineItems[0].associations);
 
     /**Verificar se os produtos que chegaram estão cadastrado
      * Se não tiver alguns dos que chegaram, cadastrar os produtos;
@@ -149,7 +133,7 @@ const requestModelCreateDeal = async (body) => {
         "O ID da cotação que você tentou cadastrar, já esta cadastrado em nossa base!",
       quoteId: respondeIdQuotes[0].id,
       dealName: respondeIdQuotes[0].properties.dealname,
-      idMaisPratico: respondeIdQuotes[0].properties.id_da_cotacao,
+      idMaisPratico: respondeIdQuotes[0].properties.id_,
     };
   }
 };
