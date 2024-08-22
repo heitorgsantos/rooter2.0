@@ -4,6 +4,7 @@ const {
 
 const createDealController = async (req, res) => {
   try {
+    console.log("Payload: ", req.body)
     const responseServiceCreateDeal = await requestModelCreateDeal(req.body);
     return res.status(201).json(responseServiceCreateDeal);
   } catch (error) {
