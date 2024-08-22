@@ -33,14 +33,14 @@ const analyseProdutcts = async (productsInHs, productsPayload) => {
 
 const formatCreateLineItems = (allProducts, dealId) => {
   // console.log(allProducts)
-  const { quantity, quantidade, price, hs_object_id, name, sku_mais_pratico } =
+  const { quantity, quantidade, hs_object_id, name, sku_mais_pratico, valor_unitario } =
     allProducts.properties;
 
   const dataAssociates = {
     properties: {
       quantity:
         quantity !== undefined && quantity !== null ? quantity : quantidade,
-      price,
+      price: valor_unitario,
       hs_product_id: hs_object_id,
       name,
       sku_mais_pratico,
