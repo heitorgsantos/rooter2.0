@@ -24,7 +24,7 @@ const patchPropertiesHS = async (url, properties) => {
     const fetchProperties = await serverAxiosHS
       .patch(url, properties)
       .then((response) => response.data.properties);
-    console.log("Atualizado com sucesso", fetchProperties);
+    // console.log("Atualizado com sucesso", fetchProperties);
     return fetchProperties;
   } catch (error) {
     return error.message;

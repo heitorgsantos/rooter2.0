@@ -20,7 +20,7 @@ const requestModelCreateDeal = async (body) => {
   const existingCompanies = await searchCompanie(empresa);
   const existingContact = await searchContact(medico, "medico");
   const existingProducts = await searchProducts(produtos);
-  console.log("Produtos HS: ", existingProducts);
+  // console.log("Produtos HS: ", existingProducts);
 
   const productsAssociateds = [];
 
@@ -83,12 +83,12 @@ const requestModelCreateDeal = async (body) => {
         // convenio: convenio,
         pipeline: "default",
         dealstage: "appointmentscheduled",
-        tipo_de_cotacao: tipo_de_cotacao,
+        tipo_de_cotacao,
         prodecd: procedimento_cirurgico,
       },
     };
-   
-    await analyseProdutcts(existingProducts, produtos);
+
+    const responseProducts = await analyseProdutcts(existingProducts, produtos);
     existingProducts.forEach((inHub) => {
       produtos.forEach((payload) => {
         if (inHub.properties.hs_sku === payload.sku_mais_pratico) {
@@ -96,14 +96,30 @@ const requestModelCreateDeal = async (body) => {
         }
       });
     });
-    console.log("Produtos cadastrados: ", existingProducts);
+    // console.log("Produtos cadastrados: ", responseAnalyseProduct);
 
     let lineItems;
-    let responseCreateQuote;
-    if (existingProducts.length > 0) {
-      responseCreateQuote = await createDeal(data);
-      lineItems = existingProducts.map((items) =>
-        formatCreateLineItems(items, responseCreateQuote)
+    let responseCreateQuote = await createDeal(data);
+    // const idTeste = {id: 15}
+    if (responseProducts.length > 0) {
+      const responseAnalyseProduct = await analyseProdutcts(
+        responseProducts,
+        produtos
+      );
+
+      lineItems = responseAnalyseProduct.map((item) => {
+        let valueUnitary = produtos.find(
+          (produto) => produto.sku_mais_pratico === item.properties.hs_sku
+        );
+        console.log("Valor Unitário: ", valueUnitary);
+        item.properties.price = valueUnitary.valor_unitario;
+        return formatCreateLineItems(item, responseCreateQuote);
+      });
+      console.log("Passou pelo formato de payload", lineItems);
+
+      // "Criação dos line items"
+      await Promise.all(
+        lineItems.map(async (lineItem) => await createLineItem(lineItem))
       );
     }
 
@@ -113,12 +129,12 @@ const requestModelCreateDeal = async (body) => {
      * Se não tiver alguns dos que chegaram, cadastrar os produtos;
      * Após ter todos os produtos cadastrados, criar os items de linha dos produtos;
      *
-     */
-    Promise.all(
-      lineItems.map(async (properties) => {
-        await createLineItem(properties);
-      })
-    );
+    //  */
+    // Promise.all(
+    //   lineItems.map(async (properties) => {
+    //     await createLineItem(properties);
+    //   })
+    // );
 
     // console.log("Cotação criada", responseCreateQuote);
     return {

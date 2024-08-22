@@ -1,46 +1,42 @@
 const { createProduct } = require("../model/product/createProductModel");
 
 const analyseProdutcts = async (productsInHs, productsPayload) => {
-  if (productsInHs.length !== productsPayload.length) {
-    console.log("Não éo mesmo tamnaho");
-    let productsToCreate = [];
-    productsInHs.forEach((inHs) => {
-      productsPayload.forEach((payload) => {
-        if (inHs.properties.hs_sku !== payload.sku_mais_pratico) {
-          productsToCreate.push(payload);
-        } else {
-          inHs.properties.quantity = payload.quantidade;
+  let productsToCreate = [];
+  let updatedProducts = [];
 
-        }
-      });
-    });
-    // console.log("Produtos a ser criados", productsToCreate);
-    for (const product of productsToCreate) {
-      const newProducts = await createProduct(product);
-      existingProducts.push(newProducts);
+  productsPayload.forEach((payload) => {
+    const existingProduct = productsInHs.find(
+      (inHs) => inHs.properties.hs_sku === payload.sku_mais_pratico
+    );
+
+    if (existingProduct) {
+      existingProduct.properties.quantity = payload.quantidade;
+      updatedProducts.push(existingProduct);
+    } else {
+      productsToCreate.push(payload);
     }
-    // console.log("Produto criados", existingProducts);
-  } else {
-    productsInHs.forEach((inHs) => {
-      productsPayload.forEach((payload) => {
-        if (inHs.properties.hs_sku === payload.sku_mais_pratico) {
-          inHs.properties.quantity = payload.quantidade;
-        }
-      });
-    });
+  });
+
+  if (productsToCreate.length > 0) {
+    const newProducts = await Promise.all(
+      productsToCreate.map((product) => createProduct(product))
+    );
+    updatedProducts = [...updatedProducts, ...newProducts];
   }
+
+  return updatedProducts;
 };
 
 const formatCreateLineItems = (allProducts, dealId) => {
   // console.log(allProducts)
-  const { quantity, quantidade, hs_object_id, name, sku_mais_pratico, valor_unitario } =
+  const { quantity, quantidade, hs_object_id, name, sku_mais_pratico, price } =
     allProducts.properties;
 
   const dataAssociates = {
     properties: {
       quantity:
         quantity !== undefined && quantity !== null ? quantity : quantidade,
-      price: valor_unitario,
+      price,
       hs_product_id: hs_object_id,
       name,
       sku_mais_pratico,
