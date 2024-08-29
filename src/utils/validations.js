@@ -13,16 +13,10 @@ const filterSugicalProcedure = (fieldHs, optionMaisPratico) => {
 };
 
 const dateFormat = (date) => {
-  const dataDaCirurgia = date.split("-")[0].split("/");
-  const horaDaCirurgia = date.split("-")[1];
-  const formatedDate = `${dataDaCirurgia[2].replace(/\s/g, "")}-${
-    dataDaCirurgia[1]
-  }-${dataDaCirurgia[0]}`;
-  const newDate = new Date(formatedDate).getTime();
-  return {
-    newDate,
-    horaDaCirurgia,
-  };
+  console.log(date)
+  const [day, month, year] = date.split("/");
+  const formattedDateStr = `${year}-${month}-${day}`;
+  return formattedDateStr;
 };
 
 module.exports = {

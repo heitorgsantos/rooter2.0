@@ -15,14 +15,10 @@ const { dateFormat } = require("../../utils/validations");
 
 const requestModelCreateDeal = async (body) => {
   const { negocio, empresa, medico, produtos } = body;
-
   const respondeIdQuotes = await searchDeal(negocio);
   const existingCompanies = await searchCompanie(empresa);
   const existingContact = await searchContact(medico, "medico");
   const existingProducts = await searchProducts(produtos);
-  // console.log("Produtos HS: ", existingProducts);
-
-  const productsAssociateds = [];
 
   const responseIdCompanie =
     existingCompanies.length > 0
@@ -45,8 +41,8 @@ const requestModelCreateDeal = async (body) => {
       tipo_de_cotacao,
       procedimento_cirurgico,
     } = negocio;
-    const { newDate, horaDaCirurgia } = dateFormat(data_hora_cirurgia);
-
+    const [date, time] = data_hora_cirurgia.split(' ');
+    console.log(date)
     const data = {
       associations: [
         {
@@ -76,11 +72,11 @@ const requestModelCreateDeal = async (body) => {
         dealname: paciente,
         instrumentador: instrumentador,
         nome_do_paciente: paciente,
-        horario_da_cirurgia: horaDaCirurgia,
-        data_da_cirurgia: newDate,
+        horario_da_cirurgia: time,
+        data_da_cirurgia: dateFormat(date),
         id_da_cotacao: id_ext,
         id_: id_da_cotacao,
-        // convenio: convenio,
+        convenio: convenio,
         pipeline: "default",
         dealstage: "appointmentscheduled",
         tipo_de_cotacao,
@@ -96,11 +92,10 @@ const requestModelCreateDeal = async (body) => {
         }
       });
     });
-    // console.log("Produtos cadastrados: ", responseAnalyseProduct);
-
+ 
     let lineItems;
+    console.log("Payload para criar negocios", data)
     let responseCreateQuote = await createDeal(data);
-    // const idTeste = {id: 15}
     if (responseProducts.length > 0) {
       const responseAnalyseProduct = await analyseProdutcts(
         responseProducts,
@@ -115,28 +110,11 @@ const requestModelCreateDeal = async (body) => {
         item.properties.price = valueUnitary.valor_unitario;
         return formatCreateLineItems(item, responseCreateQuote);
       });
-      console.log("Passou pelo formato de payload", lineItems);
-
-      // "Criação dos line items"
       await Promise.all(
         lineItems.map(async (lineItem) => await createLineItem(lineItem))
       );
     }
 
-    // console.log("Itens de Linhas: ", lineItems[0].associations);
-
-    /**Verificar se os produtos que chegaram estão cadastrado
-     * Se não tiver alguns dos que chegaram, cadastrar os produtos;
-     * Após ter todos os produtos cadastrados, criar os items de linha dos produtos;
-     *
-    //  */
-    // Promise.all(
-    //   lineItems.map(async (properties) => {
-    //     await createLineItem(properties);
-    //   })
-    // );
-
-    // console.log("Cotação criada", responseCreateQuote);
     return {
       status: 201,
       message: "Cotação cadastrada com sucesso!",
