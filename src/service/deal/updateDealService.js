@@ -44,13 +44,13 @@ const updateDealService = async (body) => {
       if (body) {
         const { instrumentador, paciente, data_hora_cirurgia, dealstage } =
           body;
-        const { newDate, horaDaCirurgia } = dateFormat(data_hora_cirurgia);
+          const [date, time] = data_hora_cirurgia.split(' ');
         const data = {
           properties: {
-            horario_da_cirurgia: horaDaCirurgia,
+            horario_da_cirurgia: time,
             instrumentador,
             nome_do_paciente: paciente,
-            data_da_cirurgia: newDate,
+            data_da_cirurgia: dateFormat(date),
             dealstage,
           },
         };
