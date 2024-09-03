@@ -61,7 +61,7 @@ const updateDealService = async (body) => {
       existingProducts.forEach((inHub) => {
         produtos.forEach((payload) => {
           if (inHub.properties.hs_sku === payload.sku_mais_pratico) {
-            inHub.properties.price = payload.price;
+            inHub.properties.price = payload.valor_unitario;
           }
         });
       });
