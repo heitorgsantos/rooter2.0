@@ -1,5 +1,5 @@
-const { deleteDeal } = require("../../model/deal/deleteDealModel");
-const { searchDeal } = require("../../model/deal/searchDealModel");
+const { deleteDeal } = require("../../HTTPS/deal/deleteDealModel");
+const { searchDeal } = require("../../HTTPS/deal/searchDealModel");
 
 const deleteDealService = async (negocio) => {
   try {
