@@ -54,7 +54,6 @@ const requestModelCreateDeal = async (body) => {
       owner
     } = negocio;
     const [date, time] = data_hora_cirurgia.split(" ");
-    console.log(date);
     const data = {
       associations: [
         {
