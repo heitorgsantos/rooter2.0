@@ -1,15 +1,15 @@
 const {
   searchDeal,
   searchDealAssociates,
-} = require("../../model/deal/searchDealModel");
+} = require("../../HTTPS/deal/searchDealModel");
 // const { searchLineItems } = require("../../model/lineItem/searchLineItem");
 // const { updateLineItem } = require("../../model/lineItem/updateLineItem");
 // const { createProduct } = require("../../model/product/createProductModel");
-const { createLineItem } = require("../../model/lineItem/createLineItem");
-const { updateDeal } = require("../../model/deal/updateDealModel");
+const { createLineItem } = require("../../HTTPS/lineItem/createLineItem");
+const { updateDeal } = require("../../HTTPS/deal/updateDealModel");
 const { dateFormat } = require("../../utils/validations");
 const { deletePropertiesHS } = require("../../utils/functions");
-const { searchProducts } = require("../../model/product/searchproductModel");
+const { searchProducts } = require("../../HTTPS/product/searchproductModel");
 const {
   analyseProdutcts,
   formatCreateLineItems,

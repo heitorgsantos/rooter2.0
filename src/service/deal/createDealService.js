@@ -1,17 +1,28 @@
-const { createCompanie } = require("../../model/companie/createCompanieModel");
-const { searchCompanie } = require("../../model/companie/searchCompanieModel");
-const { createContact } = require("../../model/contact/createContactModel");
-const { searchContact } = require("../../model/contact/searchContactModel");
-const { createDeal } = require("../../model/deal/createDealModel");
-const { searchDeal } = require("../../model/deal/searchDealModel");
-const { createLineItem } = require("../../model/lineItem/createLineItem");
-const { createProduct } = require("../../model/product/createProductModel");
-const { searchProducts } = require("../../model/product/searchproductModel");
+const { createCompanie } = require("../../HTTPS/companie/createCompanieModel");
+const { searchCompanie } = require("../../HTTPS/companie/searchCompanieModel");
+const { createContact } = require("../../HTTPS/contact/createContactModel");
+const { searchContact } = require("../../HTTPS/contact/searchContactModel");
+const { createDeal } = require("../../HTTPS/deal/createDealModel");
+const { searchDeal } = require("../../HTTPS/deal/searchDealModel");
+const { createLineItem } = require("../../HTTPS/lineItem/createLineItem");
+const { createProduct } = require("../../HTTPS/product/createProductModel");
+const { searchProducts } = require("../../HTTPS/product/searchproductModel");
 const {
   analyseProdutcts,
   formatCreateLineItems,
 } = require("../../utils/functionProducts");
 const { dateFormat } = require("../../utils/validations");
+
+const findOwner = (name) => {
+  const names = {
+    "CIBELE RODRIGUES DE CASTRO": 66993140,
+    "JULIANA GALVÃO DE CAMPOS": 65389769,
+    "PRISCILA MABELLINI GUAZELLI": 66993144,
+    "THALYA DE OLIVEIRA": 66993156,
+    "ELEOZINA MORAES RAMAZOTTI": 68288584,
+  };
+  return names[name] || null;
+};
 
 const requestModelCreateDeal = async (body) => {
   const { negocio, empresa, medico, produtos } = body;
@@ -40,9 +51,10 @@ const requestModelCreateDeal = async (body) => {
       id_ext,
       tipo_de_cotacao,
       procedimento_cirurgico,
+      owner
     } = negocio;
-    const [date, time] = data_hora_cirurgia.split(' ');
-    console.log(date)
+    const [date, time] = data_hora_cirurgia.split(" ");
+    console.log(date);
     const data = {
       associations: [
         {
@@ -81,6 +93,7 @@ const requestModelCreateDeal = async (body) => {
         dealstage: "appointmentscheduled",
         tipo_de_cotacao,
         prodecd: procedimento_cirurgico,
+        hubspot_owner_id: findOwner(owner)
       },
     };
 
@@ -92,9 +105,9 @@ const requestModelCreateDeal = async (body) => {
         }
       });
     });
- 
+
     let lineItems;
-    console.log("Payload para criar negocios", data)
+    console.log("Payload para criar negocios", data);
     let responseCreateQuote = await createDeal(data);
     if (responseProducts.length > 0) {
       const responseAnalyseProduct = await analyseProdutcts(
@@ -132,4 +145,4 @@ const requestModelCreateDeal = async (body) => {
   }
 };
 
-module.exports = { requestModelCreateDeal };
+module.exports = { requestModelCreateDeal, findOwner };

@@ -1,4 +1,4 @@
-const { createProduct } = require("../model/product/createProductModel");
+const { createProduct } = require("../HTTPS/product/createProductModel");
 
 const analyseProdutcts = async (productsInHs, productsPayload) => {
   let productsToCreate = [];
