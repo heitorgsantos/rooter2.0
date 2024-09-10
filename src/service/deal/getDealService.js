@@ -1,4 +1,4 @@
-const {  getDealStage, getDealId } = require("../../model/deal/searchDealModel");
+const {  getDealStage, getDealId } = require("../../HTTPS/deal/searchDealModel");
 
 const getDealService = async ({stage, dealId}) => {
     if(stage) {

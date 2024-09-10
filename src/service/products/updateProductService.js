@@ -1,5 +1,5 @@
-const { searchProducts } = require("../../model/product/searchproductModel");
-const { updateProduct } = require("../../model/product/updateProductModel");
+const { searchProducts } = require("../../HTTPS/product/searchproductModel");
+const { updateProduct } = require("../../HTTPS/product/updateProductModel");
 
 const updateProductService = async (products) => {
   console.log(products);

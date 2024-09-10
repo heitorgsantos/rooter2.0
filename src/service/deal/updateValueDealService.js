@@ -1,4 +1,4 @@
-const { searchDealAssociates } = require("../../model/deal/searchDealModel");
+const { searchDealAssociates } = require("../../HTTPS/deal/searchDealModel");
 const { getObjects, patchPropertiesHS } = require("../../utils/functions");
 
 const updateValueDealService = async (body) => {

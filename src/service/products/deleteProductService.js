@@ -1,5 +1,5 @@
-const { deleteProduct } = require("../../model/product/deleteProductModel");
-const { searchProducts } = require("../../model/product/searchproductModel");
+const { deleteProduct } = require("../../HTTPS/product/deleteProductModel");
+const { searchProducts } = require("../../HTTPS/product/searchproductModel");
 
 const deleteProductService = async (products) => {
   const responseSearchProduct = await searchProducts(products);
