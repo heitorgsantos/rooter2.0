@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "title": "API de Integração do Mais Prático com a HubSpot",
-    "description": "Essa API faz a Integração do Mais Prático com a HubSpot. Ao cadastrar as oportunidade de negócio no Mais Prático é enviado para um endpoit que realiza um cadastro na HubSpot. ",
+    "description": "Essa API integra o Mais Prático com a HubSpot, permitindo o cadastro e atualização de oportunidades de negócio, empresas, médicos, produtos e outras informações relacionadas.",
     "contact": {
       "email": "heitor.santos@innleaders.com"
     }
@@ -17,7 +17,7 @@
     "/create-deal": {
       "post": {
         "summary": "Cadastro da Oportunidade",
-        "description": "Essa rota é responsável por cadastrar a oportunidade de Negócio, ou seja, será cadastrado a empresa, o médico se não houver e o negócio em questão! ",
+        "description": "Cadastra uma nova oportunidade de negócio. Cria empresa, médico (se não existir), produtos e os detalhes do negócio.",
         "tags": ["Cotações"],
         "requestBody": {
           "content": {
@@ -27,13 +27,21 @@
               }
             }
           }
+        },
+        "responses": {
+          "200": {
+            "description": "Oportunidade cadastrada com sucesso."
+          },
+          "400": {
+            "description": "Erro nos dados enviados."
+          }
         }
       }
     },
     "/update-deal": {
       "post": {
         "summary": "Atualização da Oportunidade",
-        "description": "Essa rota é responsável por atualizar a oportunidade de Negócio, ou seja, o negócio em questão! ",
+        "description": "Atualiza os dados de uma oportunidade de negócio já cadastrada.",
         "tags": ["Cotações"],
         "requestBody": {
           "content": {
@@ -43,46 +51,68 @@
               }
             }
           }
-        }
-      }
-    },
-    "/get-deal?stage=${closedwon}": {
-      "get": {
-        "summary": "Negócios retornados por Etapa do Negócio",
-        "description": "",
-        "tags": ["Cotações"],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GetDealStage"
-              }
-            }
+        },
+        "responses": {
+          "200": {
+            "description": "Oportunidade atualizada com sucesso."
+          },
+          "400": {
+            "description": "Erro nos dados enviados."
           }
         }
       }
     },
-
-    "/get-deal?dealId=${id}": {
+    "/get-deal": {
       "get": {
-        "summary": "Negócio retorno de acordo com o ID enviado",
-        "description": "",
+        "summary": "Obter Negócios por Etapa",
+        "description": "Retorna negócios com base na etapa especificada (por exemplo, 'closedwon').",
         "tags": ["Cotações"],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GetDealId"
-              }
-            }
+        "parameters": [
+          {
+            "in": "query",
+            "name": "stage",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["closedwon", "closedlost", "new"]
+            },
+            "description": "Etapa do negócio."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Negócios retornados com sucesso."
+          }
+        }
+      }
+    },
+    "/get-deal/{dealId}": {
+      "get": {
+        "summary": "Obter Negócio por ID",
+        "description": "Retorna um negócio específico com base no ID fornecido.",
+        "tags": ["Cotações"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "dealId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do negócio."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Negócio retornado com sucesso."
           }
         }
       }
     },
     "/delete-deal": {
       "delete": {
-        "summary": "Deleta Negócio",
-        "description": "Essa rota é responsável por deletar uma cotação",
+        "summary": "Deletar Negócio",
+        "description": "Deleta uma oportunidade de negócio existente.",
         "tags": ["Cotações"],
         "requestBody": {
           "content": {
@@ -92,13 +122,18 @@
               }
             }
           }
+        },
+        "responses": {
+          "200": {
+            "description": "Negócio deletado com sucesso."
+          }
         }
       }
     },
     "/create-product": {
       "post": {
-        "summary": "Criar Produtos",
-        "description": "Essa rota é responsável por criar produtos",
+        "summary": "Criar Produto",
+        "description": "Cria um novo produto associado ao negócio.",
         "tags": ["Produtos"],
         "requestBody": {
           "content": {
@@ -108,13 +143,18 @@
               }
             }
           }
+        },
+        "responses": {
+          "200": {
+            "description": "Produto criado com sucesso."
+          }
         }
       }
     },
     "/update-product": {
       "patch": {
-        "summary": "Atualização do Produto",
-        "description": "Essa rota é responsável por atualizar os valores do produto",
+        "summary": "Atualizar Produto",
+        "description": "Atualiza os detalhes de um produto existente.",
         "tags": ["Produtos"],
         "requestBody": {
           "content": {
@@ -124,13 +164,18 @@
               }
             }
           }
+        },
+        "responses": {
+          "200": {
+            "description": "Produto atualizado com sucesso."
+          }
         }
       }
     },
     "/delete-product": {
       "delete": {
-        "summary": "Delete Produto",
-        "description": "Essa rota é responsável por atualizar os valores do produto",
+        "summary": "Deletar Produto",
+        "description": "Deleta um produto de um negócio.",
         "tags": ["Produtos"],
         "requestBody": {
           "content": {
@@ -140,11 +185,15 @@
               }
             }
           }
+        },
+        "responses": {
+          "200": {
+            "description": "Produto deletado com sucesso."
+          }
         }
       }
     }
   },
-
   "components": {
     "schemas": {
       "Deal": {
@@ -152,234 +201,281 @@
         "properties": {
           "medico": {
             "type": "object",
+            "description": "Informações do médico associado ao negócio.",
             "properties": {
               "nome": {
-                "type": "string"
+                "type": "string",
+                "description": "Nome do médico."
               },
               "sobrenome": {
-                "type": "string"
+                "type": "string",
+                "description": "Sobrenome do médico."
               },
               "crm": {
-                "type": "integer"
+                "type": "integer",
+                "description": "Número de CRM do médico."
               },
               "rua": {
-                "type": "string"
+                "type": "string",
+                "description": "Rua do endereço do médico."
               },
               "numero": {
-                "type": "integer"
+                "type": "integer",
+                "description": "Número do endereço do médico."
               },
               "bairro": {
-                "type": "string"
+                "type": "string",
+                "description": "Bairro onde o médico reside."
               },
               "cidade": {
-                "type": "string"
+                "type": "string",
+                "description": "Cidade do médico."
               },
               "email": {
-                "type": "string"
+                "type": "string",
+                "description": "Endereço de e-mail do médico."
               },
               "telefone": {
-                "type": "string"
+                "type": "string",
+                "description": "Telefone de contato do médico."
               },
               "tipo_de_contato": {
-                "type": "string"
+                "type": "string",
+                "description": "Tipo de contato preferido (e.g., telefone, e-mail)."
               }
             },
             "required": ["crm"]
           },
           "produtos": {
             "type": "array",
+            "description": "Lista de produtos associados à oportunidade.",
             "items": {
               "type": "object",
               "properties": {
                 "nomeDoProduto": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "Nome do produto."
                 },
                 "sku_mais_pratico": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "SKU do produto no sistema Mais Prático."
                 },
                 "valor_unitario": {
-                  "type": "integer"
+                  "type": "integer",
+                  "description": "Valor unitário do produto."
                 },
                 "price": {
-                  "type": "integer"
+                  "type": "integer",
+                  "description": "Preço final do produto."
                 },
                 "quantidade": {
-                  "type": "integer"
+                  "type": "integer",
+                  "description": "Quantidade do produto."
                 },
                 "registro_anvisa": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "Número de registro do produto na Anvisa."
                 },
                 "descricao": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "Descrição detalhada do produto."
                 },
                 "lote": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "Lote do produto."
                 }
               }
             }
           },
           "empresa": {
             "type": "object",
+            "description": "Informações da empresa associada à oportunidade.",
             "properties": {
               "cnpj": {
-                "type": "string"
+                "type": "string",
+                "description": "CNPJ da empresa."
               },
               "razao_social": {
-                "type": "string"
+                "type": "string",
+                "description": "Razão social da empresa."
               },
               "classificacao_da_empresa": {
-                "type": "string"
+                "type": "string",
+                "description": "Classificação da empresa."
               }
             },
-
             "required": ["cnpj"]
           },
           "negocio": {
             "type": "object",
+            "description": "Detalhes da oportunidade de negócio.",
             "properties": {
               "instrumentador": {
-                "type": "string"
+                "type": "string",
+                "description": "Nome do instrumentador responsável pela cirurgia."
               },
               "paciente": {
-                "type": "string"
+                "type": "string",
+                "description": "Nome do paciente."
               },
               "procedimento_cirurgico": {
-                "type": "string"
+                "type": "string",
+                "description": "Tipo de procedimento cirúrgico."
               },
               "data_hora_cirurgia": {
-                "type": "string"
+                "type": "string",
+                "description": "Data e hora da cirurgia."
               },
               "convenio": {
-                "type": "string"
+                "type": "string",
+                "description": "Convênio médico associado ao paciente."
               },
               "id_da_cotacao": {
-                "type": "string"
+                "type": "string",
+                "description": "Identificador da cotação."
               },
               "id_ext": {
-                "type": "string"
+                "type": "string",
+                "description": "Identificador externo do negócio."
+              },
+              "owner": {
+                "type": "string",
+                "description": "Proprietário ou responsável pelo negócio."
               }
             }
           },
           "contato": {
             "type": "object",
+            "description": "Informações de contato associadas à oportunidade.",
             "properties": {
               "nome": {
-                "type": "string"
+                "type": "string",
+                "description": "Nome do contato."
               },
               "sobrenome": {
-                "type": "string"
+                "type": "string",
+                "description": "Sobrenome do contato."
               },
               "email": {
-                "type": "string"
+                "type": "string",
+                "description": "E-mail do contato."
               }
             },
             "required": ["email"]
           }
         }
       },
-
       "UpdateDeal": {
         "type": "object",
         "properties": {
           "instrumentador": {
-            "type": "string"
+            "type": "string",
+            "description": "Nome do instrumentador."
           },
           "paciente": {
-            "type": "string"
+            "type": "string",
+            "description": "Nome do paciente."
           },
           "data_hora_cirurgia": {
-            "type": "string"
+            "type": "string",
+            "description": "Data e hora da cirurgia."
           },
           "convenio": {
-            "type": "string"
+            "type": "string",
+            "description": "Convênio médico associado ao paciente."
           },
-          "id_da_cotacao": {
-            "type": "string"
-          },
-
           "produtos": {
             "type": "array",
+            "description": "Produtos associados à oportunidade.",
             "items": {
               "type": "object",
-
               "properties": {
                 "nomeDoProduto": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "Nome do produto."
                 },
                 "valor_unitario": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "Valor unitário do produto."
                 },
                 "price": {
-                  "type": "integer"
+                  "type": "integer",
+                  "description": "Preço do produto."
                 },
                 "lote": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "Lote do produto."
                 },
                 "quantidade": {
-                  "type": "integer"
+                  "type": "integer",
+                  "description": "Quantidade do produto."
                 },
                 "sku_mais_pratico": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "SKU do produto no Mais Prático."
                 },
                 "descricao": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "Descrição do produto."
                 },
                 "registro_anvisa": {
-                  "type": "string"
-                },
-                "fabricante": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "Registro Anvisa do produto."
                 }
               }
             }
           }
         }
       },
-
       "DeleteDeal": {
         "type": "object",
         "properties": {
           "id_da_cotacao": {
-            "type": "string"
+            "type": "string",
+            "description": "ID da cotação a ser deletada."
           }
         }
       },
-
-      "GetDealStage": {},
-
-      "GetDealId": {},
-
       "CreateProduct": {
         "type": "object",
         "properties": {
           "produtos": {
             "type": "array",
+            "description": "Produtos a serem criados.",
             "items": {
               "type": "object",
               "properties": {
                 "nomeDoProduto": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "Nome do produto."
                 },
                 "sku_mais_pratico": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "SKU do produto."
                 },
                 "valor_unitario": {
-                  "type": "integer"
+                  "type": "integer",
+                  "description": "Valor unitário do produto."
                 },
                 "price": {
-                  "type": "integer"
+                  "type": "integer",
+                  "description": "Preço final do produto."
                 },
                 "quantidade": {
-                  "type": "integer"
+                  "type": "integer",
+                  "description": "Quantidade do produto."
                 },
                 "registro_anvisa": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "Registro Anvisa do produto."
                 },
                 "descricao": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "Descrição do produto."
                 },
                 "lote": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "Lote do produto."
                 }
               }
             }
@@ -391,48 +487,58 @@
         "properties": {
           "produtos": {
             "type": "array",
+            "description": "Produtos a serem atualizados.",
             "items": {
               "type": "object",
               "properties": {
                 "nomeDoProduto": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "Nome do produto."
                 },
                 "sku_mais_pratico": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "SKU do produto."
                 },
                 "valor_unitario": {
-                  "type": "integer"
+                  "type": "integer",
+                  "description": "Valor unitário do produto."
                 },
                 "price": {
-                  "type": "integer"
+                  "type": "integer",
+                  "description": "Preço final do produto."
                 },
                 "quantidade": {
-                  "type": "integer"
+                  "type": "integer",
+                  "description": "Quantidade do produto."
                 },
                 "registro_anvisa": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "Registro Anvisa do produto."
                 },
                 "descricao": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "Descrição do produto."
                 },
                 "lote": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "Lote do produto."
                 }
               }
             }
           }
         }
       },
-
       "DeleteProduct": {
         "properties": {
           "produtos": {
             "type": "array",
+            "description": "Produtos a serem deletados.",
             "items": {
               "type": "object",
               "properties": {
                 "sku_mais_pratico": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "SKU do produto."
                 }
               }
             }
